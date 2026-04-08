@@ -25,9 +25,9 @@ jobs:
         - runs-on: 'ubicloud-standard-8-arm'
         - runs-on: 'macos-latest'
         exclude:
-          # If build_macos is false, this becomes 'macos-latest' and excludes the job.
-          # If true, it evaluates to an empty string and excludes nothing.
-          - runs-on: ${{ !inputs.build_macos && 'macos-latest' || '' }}
+        # If build_macos is false, this becomes 'macos-latest' and excludes the job.
+        # If true, it evaluates to an empty string and excludes nothing.
+        - runs-on: ${{ !inputs.build_macos && 'macos-latest' || '' }}
     runs-on: ${{ matrix.runs-on }}
     steps:
     - name: echo
