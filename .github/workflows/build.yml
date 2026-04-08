@@ -53,9 +53,22 @@ jobs:
         name: marlin
         authToken: ${{secrets.CACHIX_AUTH_TOKEN}}
         useDaemon: false
+    - name: Check if derivation exists in Cachix
+      id: check_cache
+      run: |
+        # Get the out-path of the derivation
+        OUT_PATH=$(nix eval github:marlinprotocol/marlin/${{ inputs.revision }}#${{ inputs.target }}.outPath --raw)        
+        if nix path-info --store https://marlin.cachix.org "$OUT_PATH" >/dev/null 2>&1; then
+          echo "exists=true" >> $GITHUB_OUTPUT
+          echo "Artifact already exists in Cachix. Skipping build."
+        else
+          echo "exists=false" >> $GITHUB_OUTPUT
+          echo "Artifact not found. Proceeding with build."
+        fi
     - name: permissions
       run: |
         sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
         sudo sysctl -w kernel.unprivileged_userns_clone=1
     - name: build
+      if: steps.check_cache.outputs.exists != 'true'
       run: nix build -vL --accept-flake-config github:marlinprotocol/marlin/${{ inputs.revision }}#${{ inputs.target }}
