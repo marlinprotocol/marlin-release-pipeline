@@ -9,6 +9,16 @@ on:
       target:
         description: 'build target'
         required: true
+      build_amd64:
+        description: 'Build on amd64'
+        required: false
+        default:  false
+        type: boolean
+      build_arm64:
+        description: 'Build on arm64'
+        required: false
+        default:  true
+        type: boolean
       build_macos:
         description: 'Build on macOS'
         required: false
