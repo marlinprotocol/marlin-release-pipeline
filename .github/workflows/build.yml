@@ -40,6 +40,7 @@ jobs:
       with:
         name: marlin
         authToken: ${{secrets.CACHIX_AUTH_TOKEN}}
+        useDaemon: false
     - name: permissions
       run: |
         sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
