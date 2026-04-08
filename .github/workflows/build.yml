@@ -20,10 +20,10 @@ jobs:
     name: Build
     strategy:
       matrix:
-        include:
-        - runs-on: 'ubicloud-standard-8'
-        - runs-on: 'ubicloud-standard-8-arm'
-        - runs-on: 'macos-latest'
+        runs-on:
+        - 'ubicloud-standard-8'
+        - 'ubicloud-standard-8-arm'
+        - 'macos-latest'
         exclude:
         # If build_macos is false, this becomes 'macos-latest' and excludes the job.
         # If true, it evaluates to an empty string and excludes nothing.
