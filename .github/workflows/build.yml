@@ -1,0 +1,44 @@
+name: Build
+on:
+  workflow_dispatch:
+    inputs:
+      revision:
+        description: 'repository revision'
+        required: false
+        default: 'master'
+      target:
+        description: 'build target'
+        required: true
+      build_macos:
+        description: 'Build on macOS'
+        required: false
+        default:  false
+        type: boolean
+jobs:
+  build:
+    if: github.actor == 'roshanrags'
+    name: Build
+    strategy:
+      matrix:
+        include:
+        - runs-on: 'ubicloud-standard-8'
+        - runs-on: 'ubicloud-standard-8-arm'
+        - runs-on: 'macos-latest'
+        exclude:
+          # If build_macos is false, this becomes 'macos-latest' and excludes the job.
+          # If true, it evaluates to an empty string and excludes nothing.
+          - runs-on: ${{ !inputs.build_macos && 'macos-latest' || '' }}
+    runs-on: ${{ matrix.runs-on }}
+    steps:
+    - name: echo
+      run: |
+        echo revision ${{ inputs.revision }}
+    - name: Install Nix
+      uses: cachix/install-nix-action@v30
+    - name: Cachix
+      uses: cachix/cachix-action@v15
+      with:
+        name: marlin
+        authToken: ${{secrets.CACHIX_AUTH_TOKEN}}
+    - name: build
+      run: nix build -vL --accept-flake-config github:marlinprotocol/marlin/${{ inputs.revision }}#${{ inputs.target }}
