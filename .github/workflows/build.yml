@@ -57,7 +57,7 @@ jobs:
       id: check_cache
       run: |
         # Get the out-path of the derivation
-        OUT_PATH=$(nix eval github:marlinprotocol/marlin/${{ inputs.revision }}#${{ inputs.target }}.outPath --raw)        
+        OUT_PATH=$(nix eval --accept-flake-config github:marlinprotocol/marlin/${{ inputs.revision }}#${{ inputs.target }}.outPath --raw)        
         if nix path-info --store https://marlin.cachix.org "$OUT_PATH" >/dev/null 2>&1; then
           echo "exists=true" >> $GITHUB_OUTPUT
           echo "Artifact already exists in Cachix. Skipping build."
