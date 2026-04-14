@@ -31,15 +31,15 @@ jobs:
     strategy:
       matrix:
         runs-on:
-        - 'ubicloud-standard-8'
-        - 'ubicloud-standard-8-arm'
+        - 'ubicloud-standard-4'
+        - 'ubicloud-standard-4-arm'
         - 'macos-latest'
         exclude:
         # If build_macos is false, this becomes 'macos-latest' and excludes the job.
         # If true, it evaluates to an empty string and excludes nothing.
         - runs-on: ${{ !inputs.build_macos && 'macos-latest' || '' }}
-        - runs-on: ${{ !inputs.build_amd64 && 'ubicloud-standard-8' || '' }}
-        - runs-on: ${{ !inputs.build_arm64 && 'ubicloud-standard-8-arm' || '' }}
+        - runs-on: ${{ !inputs.build_amd64 && 'ubicloud-standard-4' || '' }}
+        - runs-on: ${{ !inputs.build_arm64 && 'ubicloud-standard-4-arm' || '' }}
     runs-on: ${{ matrix.runs-on }}
     steps:
     - name: echo
