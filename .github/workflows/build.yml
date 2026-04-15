@@ -3,11 +3,11 @@ on:
   workflow_dispatch:
     inputs:
       revision:
-        description: 'repository revision'
+        description: 'Repository revision'
         required: false
         default: 'master'
       target:
-        description: 'build target'
+        description: 'Build target'
         required: true
       build_amd64:
         description: 'Build on amd64'
@@ -45,6 +45,7 @@ jobs:
     - name: echo
       run: |
         echo revision ${{ inputs.revision }}
+        echo target ${{ inputs.target }}
     - name: Install Nix
       uses: cachix/install-nix-action@v30
     - name: Cachix
